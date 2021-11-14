@@ -3,7 +3,7 @@ version: '3'
 services:
   dac-portal:
     build:
-      context: ./dac-portal
+      context: ./DAC-Portal
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -11,9 +11,9 @@ services:
     env_file:
       - .env
     volumes:
-      - "./dac-portal/src:/app/src"
-      - "./dac-portal/public:/app/public"
-      - "./dac-portal/server:/app/server"
+      - "./DAC-Portal/src:/app/src"
+      - "./DAC-Portal/public:/app/public"
+      - "./DAC-Portal/server:/app/server"
     links:
       - keycloak
       - postgres
