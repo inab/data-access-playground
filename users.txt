@@ -1,0 +1,17 @@
+# Here is the list of registered users and their credentials, that you will have to use after accessing the DAC-Portal UI: http://localhost:3000
+
+username: dac-admin
+password: dac-admin
+
+username: dac-member
+password: dac-member
+
+username: user-1
+password: user-1
+
+username: user-2
+password: user-2
+
+username: user-3
+password: user-3
+~               
