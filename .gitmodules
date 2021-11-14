@@ -1,0 +1,3 @@
+[submodule "Permissions-API"]
+	path = Permissions-API
+	url = https://github.com/inab/Permissions-API.git
