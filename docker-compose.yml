@@ -21,8 +21,6 @@ services:
     networks:
       dac-network:
         ipv4_address: 172.21.0.14
-    networks:
-      - dac-network
   postgres:
       image: postgres
       environment:
