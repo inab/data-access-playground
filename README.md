@@ -75,7 +75,7 @@ The docker-compose.yml creates a private subnetwork (172.21.0.0/24) that assigns
 
 - Access to the DAC-Portal service and login:
 
-    - Go to your browser and access to http://localhost:3000
+    - Go to your browser and access to http://172.21.0.14:3000
 
     - Once redirected to the Keycloak's login page, introduce your credentials (check the 'user.txt' file in the root project's folder)
 
