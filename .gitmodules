@@ -4,3 +4,6 @@
 [submodule "DAC-Portal"]
 	path = DAC-Portal
 	url = https://github.com/acavalls/DAC-Portal.git
+[submodule "ipc-test-data"]
+	path = ipc-test-data
+	url = https://github.com/acavalls/ipc-test-data.git
