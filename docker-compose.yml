@@ -9,7 +9,7 @@ services:
       - "3080:3080"
       - "9090:9090"
     env_file:
-      - .env
+      - .env-dac
     volumes:
       - "./DAC-Portal/src:/app/src"
       - "./DAC-Portal/public:/app/public"
