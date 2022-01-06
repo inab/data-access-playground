@@ -55,7 +55,7 @@ The docker-compose.yml creates a private subnetwork (172.21.0.0/24) that assigns
     git clone https://github.com/acavalls/data-access-playground.git
     ```
 
-- Initialise git submodules (Permissions-API, DAC-Portal) 
+- Initialise git submodules (Permissions-API, DAC-Portal and ipc-test-data) 
 
     Execute the following commands in the root folder:
 
@@ -66,6 +66,14 @@ The docker-compose.yml creates a private subnetwork (172.21.0.0/24) that assigns
 
     As a result, the different git repositories will be cloned as dependencies of the main project.
 
+- Select a valid dataset for working on this environment:
+
+    Execute the following commands in the root folder:
+
+    ```
+    cd ipc-test-data
+    git checkout data-access-playground
+    ```
 
 - Launch the stack (main project root folder):
 
@@ -75,10 +83,17 @@ The docker-compose.yml creates a private subnetwork (172.21.0.0/24) that assigns
 
 - Access to the DAC-Portal service and login:
 
-    - Go to your browser and access to http://172.21.0.14:3000
+    - Go to your browser and access to http://172.21.0.14:3080
 
-    - Once redirected to the Keycloak's login page, introduce your credentials (check the 'user.txt' file in the root project's folder)
+    - Once redirected to the Keycloak's login page, introduce your credentials (check the 'users.txt' file in the root project's folder)
 
+- DACs memberships: 
+
+    |       DAC      |                 USER                    |
+    | -------------- | --------------------------------------- |
+    | IPC00000000001 | dac-admin-1, dac-member-1, dac-member-2 |
+    | IPC00000000002 | dac-admin-1, dac-admin-2, dac-member-1  |
+    | IPC00000000003 | dac-admin-3, dac-member-3               |
 
 That's it! Easy, right?
 
