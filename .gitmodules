@@ -10,3 +10,6 @@
 [submodule "ipc-plugins"]
 	path = ipc-plugins
 	url = https://github.com/acavalls/ipc-plugins.git
+[submodule "DAC-Notify"]
+	path = DAC-Notify
+	url = https://github.com/inab/DAC-Notify.git
