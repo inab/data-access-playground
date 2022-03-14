@@ -9,67 +9,74 @@ services:
       - "3080:3080"
       - "9090:9090"
     env_file:
-      - .env-dac
+      - ./DAC-Portal/.env
     volumes:
       - "./DAC-Portal/src:/app/src"
       - "./DAC-Portal/public:/app/public"
       - "./DAC-Portal/server:/app/server"
-    links:
+    depends_on:
       - keycloak
-      - postgres
       - mongo
+      - permissions-api
+      - rabbitmq
+    restart: on-failure
+    links: 
+      - rabbitmq
     networks:
       dac-network:
         ipv4_address: 172.21.0.14
-  postgres:
-      image: postgres
-      environment:
-        POSTGRES_DB: ${POSTGRES_DB}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      networks:
-        dac-network:
-          ipv4_address: 172.21.0.13
-  keycloak:
-      image: quay.io/keycloak/keycloak:15.0.2
-      environment:
-        DB_VENDOR: ${DB_VENDOR}
-        DB_ADDR: ${DB_ADDR}
-        DB_DATABASE: ${DB_DATABASE}
-        DB_USER: ${DB_USER}
-        DB_SCHEMA: ${DB_SCHEMA}
-        DB_PASSWORD: ${DB_PASSWORD}
-        KEYCLOAK_USER: ${KEYCLOAK_USER}
-        KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
-        #KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth
-      volumes:
-        - "./ipc-test-data/keycloak/realms:/opt/jboss/keycloak/imports"
-        - "./ipc-plugins/keycloak:/opt/jboss/keycloak/standalone/deployments"
-      command:
-        - '-b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.migration.strategy=IGNORE_EXISTING'
-      ports:
-        - 8080:8080
-      links:
-        - postgres
-      networks:
-        dac-network:
-          ipv4_address: 172.21.0.12
   permissions-api:
     build:
       context: ./Permissions-API
       dockerfile: Dockerfile
     ports:
       - 8081:8081
+    volumes:
+      - ./Permissions-API/src:/app/src
     env_file:
-      - .env-permissions
-    links:
+      - ./Permissions-API/.env
+    depends_on:
       - mongo
       - keycloak
-    volumes:
-      - "./Permissions-API/src:/app/src"
+      - rabbitmq
+    restart: on-failure
+    links: 
+      - rabbitmq
     networks:
       dac-network:
         ipv4_address: 172.21.0.11
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      dac-network:
+        ipv4_address: 172.21.0.13
+  keycloak:
+    image: quay.io/keycloak/keycloak:15.0.2
+    environment:
+      DB_VENDOR: ${DB_VENDOR}
+      DB_ADDR: ${DB_ADDR}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_SCHEMA: ${DB_SCHEMA}
+      DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+    volumes:
+      - "./ipc-test-data/keycloak/realms:/opt/jboss/keycloak/imports"
+      - "./ipc-plugins/keycloak:/opt/jboss/keycloak/standalone/deployments"
+    command:
+      - '-b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.migration.strategy=IGNORE_EXISTING'
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      dac-network:
+        ipv4_address: 172.21.0.12
   mongo:
     image: mongo:4.4
     environment:
@@ -77,15 +84,44 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
     ports:
       - 27017:27017
-    links:
-      - keycloak
     volumes:
-      - ./ipc-test-data/mdbdata:/data/db
+      - "./ipc-test-data/mdbdata:/data/db"
     networks:
       dac-network:
         ipv4_address: 172.21.0.10
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://172.21.0.1:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    networks:
+      dac-network:
+        ipv4_address: 172.21.0.24
+  subscriber:
+    build:
+      context: ./DAC-Notify
+      dockerfile: Dockerfile
+    env_file:
+      - ./DAC-Notify/.env
+    volumes:
+      - "./DAC-Notify/subscriber.js:/app/subscriber.js"
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    networks:
+      dac-network:
+        ipv4_address: 172.21.0.23
 networks:
   dac-network:
     ipam:
       config:
         - subnet: 172.21.0.0/24
+
