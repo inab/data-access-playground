@@ -19,9 +19,6 @@ services:
       - mongo
       - permissions-api
       - rabbitmq
-    restart: on-failure
-    links: 
-      - rabbitmq
     networks:
       dac-network:
         ipv4_address: 172.21.0.14
@@ -38,9 +35,6 @@ services:
     depends_on:
       - mongo
       - keycloak
-      - rabbitmq
-    restart: on-failure
-    links: 
       - rabbitmq
     networks:
       dac-network:
@@ -96,7 +90,7 @@ services:
       - 5672:5672
       - 15672:15672
     healthcheck:
-        test: ["CMD", "curl", "-f", "http://172.21.0.1:15672"]
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
         interval: 30s
         timeout: 10s
         retries: 5
@@ -111,11 +105,7 @@ services:
       - ./DAC-Notify/.env
     volumes:
       - "./DAC-Notify/subscriber.js:/app/subscriber.js"
-    restart: on-failure
-    depends_on:
-      - rabbitmq
-    links: 
-      - rabbitmq
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=60 -- npm run subscribe'
     networks:
       dac-network:
         ipv4_address: 172.21.0.23
