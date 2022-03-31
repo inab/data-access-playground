@@ -13,3 +13,6 @@
 [submodule "DAC-Notify"]
 	path = DAC-Notify
 	url = https://github.com/inab/DAC-Notify.git
+[submodule "DAC-Management-Portal"]
+	path = DAC-Management-Portal
+	url = https://github.com/inab/DAC-Management-Portal.git
