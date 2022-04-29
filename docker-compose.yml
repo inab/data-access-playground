@@ -155,8 +155,9 @@ services:
     env_file:
       - ./DAC-Notify/.env
     volumes:
-      - "./DAC-Notify/subscriber.js:/app/subscriber.js"
-    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=60 -- npm run subscribe'
+      - "./DAC-Notify/subscriber-data.js:/app/subscriber-data.js"
+      - "./DAC-Notify/subscriber-users.js:/app/subscriber-users.js"
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=180 -- npm run subscribe'
     networks:
       dac-network:
         ipv4_address: 172.21.0.23
