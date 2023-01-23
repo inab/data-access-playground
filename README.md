@@ -20,11 +20,9 @@ This service enables the creation/inspection/deletion of user permissions at the
 
 For technical details you can go to the [Permissions-API repository](https://github.com/inab/Permissions-API)
 
-#### Helpdesk portal:
+#### DAC-Management-Portal:
 
 Here, system administrators will be able to assign roles to the different users (i.e: DAC-admin), and validate the creation of new DACs. Importantly, this service should take care of the assignment of different files/datasets to the specific DACs.
-
-This service has not been implemented yet.
 
 #### Keycloak:
 
@@ -61,7 +59,7 @@ The docker-compose.yml creates a private subnetwork (172.21.0.0/24) that assigns
 
     ```
     git submodule init
-    git submodule update
+    git submodule update --recursive
     ```
 
     As a result, the different git repositories will be cloned as dependencies of the main project.
