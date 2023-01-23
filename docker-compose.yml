@@ -1,27 +1,37 @@
 version: '3.7'
 
 services:
-  dac-portal:
+  dac-portal-frontend:
     build:
-      context: ./DAC-Portal
+      context: ./DAC-Portal/DAC-Portal-frontend
       dockerfile: Dockerfile
     ports:
-      - "3080:3080"
-      - "9090:9090"
+      - 3080:3080
     env_file:
-      - ./DAC-Portal/.env
+      - ./DAC-Portal/DAC-Portal-frontend/.env
     volumes:
-      - "./DAC-Portal/src:/app/src"
-      - "./DAC-Portal/public:/app/public"
-      - "./DAC-Portal/server:/app/server"
+      - ./DAC-Portal/DAC-Portal-frontend/src:/app/src
     depends_on:
-      - keycloak
       - mongo
-      - permissions-api
-      - rabbitmq
+      - keycloak
     networks:
       dac-network:
         ipv4_address: 172.21.0.14
+  dac-portal-backend:
+    build: 
+      context: ./DAC-Portal/DAC-Portal-backend
+      dockerfile: Dockerfile
+    ports:
+      - 9090:9090
+    env_file:
+      - ./DAC-Portal/DAC-Portal-backend/.env
+    volumes:
+      - ./DAC-Portal/DAC-Portal-backend/src:/usr/src/app/src
+    depends_on:
+      - mongo
+    networks:
+      dac-network:
+        ipv4_address: 172.21.0.19
   permissions-api:
     build:
       context: ./Permissions-API
