@@ -1,9 +1,6 @@
 [submodule "Permissions-API"]
 	path = Permissions-API
 	url = https://github.com/inab/Permissions-API.git
-[submodule "DAC-Portal"]
-	path = DAC-Portal
-	url = https://github.com/acavalls/DAC-Portal.git
 [submodule "ipc-test-data"]
 	path = ipc-test-data
 	url = https://github.com/acavalls/ipc-test-data.git
@@ -16,3 +13,6 @@
 [submodule "DAC-Management-Portal"]
 	path = DAC-Management-Portal
 	url = https://github.com/inab/DAC-Management-Portal.git
+[submodule "DAC-Portal"]
+	path = DAC-Portal
+	url = https://github.com/acavalls/DAC-Portal.git
