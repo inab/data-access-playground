@@ -3,10 +3,10 @@
 	url = https://github.com/inab/Permissions-API.git
 [submodule "ipc-test-data"]
 	path = ipc-test-data
-	url = https://github.com/acavalls/ipc-test-data.git
+	url = https://github.com/inab/ipc-test-data.git
 [submodule "ipc-plugins"]
 	path = ipc-plugins
-	url = https://github.com/acavalls/ipc-plugins.git
+	url = https://github.com/inab/ipc-plugins.git
 [submodule "DAC-Notify"]
 	path = DAC-Notify
 	url = https://github.com/inab/DAC-Notify.git
@@ -15,4 +15,4 @@
 	url = https://github.com/inab/DAC-Management-Portal.git
 [submodule "DAC-Portal"]
 	path = DAC-Portal
-	url = https://github.com/acavalls/DAC-Portal.git
+	url = https://github.com/inab/DAC-Portal.git
